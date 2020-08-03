@@ -10,6 +10,13 @@ export default {
             // data:把对象转成JSON传给后端
             data: teacherVO
           })
+    },
+
+    deleteTeacherId(id){
+        return request({
+            url: `/eduservice/teacher/${id}`,
+            method: 'delete'
+        })
     }
 }
 

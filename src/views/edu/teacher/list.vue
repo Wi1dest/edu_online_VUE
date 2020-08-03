@@ -113,14 +113,37 @@ export default {
           this.list = response.data.rows;
           this.total = response.data.total;
         })
-        //请求失败
-        .catch((error) => {});
     },
     resetData() {
-    // 因为是v-model双向绑定的 所以此处清空 上面也清空
-    this.teacherVO = {}
-    this.getList()
-    }
+      // 因为是v-model双向绑定的 所以此处清空 上面也清空
+      this.teacherVO = {};
+      this.getList();
+    },
+    removeDataById(id) {
+      this.$confirm("此操作将永久删除讲师记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          //调用删除方法
+          teacher.deleteTeacherId(id).then((response) => {
+            //提示信息
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //回到列表
+            this.getList();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
   },
 };
 </script>

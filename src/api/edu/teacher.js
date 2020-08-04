@@ -11,11 +11,30 @@ export default {
             data: teacherVO
           })
     },
-
     deleteTeacherId(id){
         return request({
             url: `/eduservice/teacher/${id}`,
             method: 'delete'
+        })
+    },
+    addTeacher(teacher){
+        return request({
+            url: `/eduservice/teacher`,
+            method: 'post',
+            data: teacher
+        })
+    },
+    updateTeacherById(teacher){
+        return request({
+            url: `/eduservice/teacher`,
+            method: 'put',
+            data: teacher
+        })
+    },
+    getTeacherInfo(id){
+        return request({
+            url: `/eduservice/teacher/${id}`,
+            method: 'get',
         })
     }
 }

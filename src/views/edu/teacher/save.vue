@@ -153,12 +153,15 @@ export default {
     // 关闭上传弹窗
     close() {
         this.imagecropperShow = false
+        //上传组件初始化(不然上传成功后想重新上传会显示"上传成功"而无法选择照片)
+        this.imagecropperKey = this.imagecropperKey + 1
     },
     //上传成功方法
     cropSuccess(data) {
         this.imagecropperShow = false
         //上传之后接口返回的地址
         this.teacher.avatar = data.url
+        this.imagecropperKey = this.imagecropperKey + 1
     },
   },
 };

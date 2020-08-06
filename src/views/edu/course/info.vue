@@ -60,9 +60,9 @@
         />
       </el-form-item>
 
-      <!-- 课程简介 -->
+      <!-- 课程简介-->
       <el-form-item label="课程简介">
-        <el-input v-model="courseInfo.description" placeholder=" " />
+        <tinymce :height="300" v-model="courseInfo.description" />
       </el-form-item>
 
       <!-- 课程封面 -->
@@ -97,14 +97,19 @@
 <script>
 import course from "@/api/edu/course";
 import subject from "@/api/edu/subject";
+import Tinymce from "@/components/Tinymce";
 
 export default {
+  components: {
+    Tinymce
+  },
   data() {
     return {
       saveBtnDisabled: false, // 保存按钮是否禁用
       courseInfo: {
         title: "",
         subjectId: "",
+        subjectParentId: "",
         teacherId: "",
         lessonNum: 0,
         description: "",
@@ -158,7 +163,7 @@ export default {
       }
     },
     //上传成功
-    handleAvatarSuccess(res,file) {
+    handleAvatarSuccess(res, file) {
       this.courseInfo.cover = res.data.url;
     },
     //上传之前
@@ -177,3 +182,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.tinymce-container {
+  line-height: 29px;
+}
+</style>

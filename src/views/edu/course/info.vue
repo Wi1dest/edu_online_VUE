@@ -101,7 +101,7 @@ import Tinymce from "@/components/Tinymce";
 
 export default {
   components: {
-    Tinymce
+    Tinymce,
   },
   data() {
     return {
@@ -123,8 +123,16 @@ export default {
     };
   },
   created() {
-    this.getTeacherList();
-    this.getSubjectList();
+    //获取路由的id值
+    if (this.$route.params && this.$route.params.id) {
+      this.courseId = this.$route.params.id;
+      this.getCourseById(this.courseId);
+    } else {
+      // 讲师列表
+      this.getTeacherList();
+      // 一级分类
+      this.getSubjectList();
+    }
   },
   methods: {
     saveOrUpdate() {
@@ -178,6 +186,29 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    getCourseById(courseId) {
+      course.getCourseById(courseId).then((response) => {
+        this.courseInfo = response.data;
+        // 查询所有分类(包含一级和二级)
+        subject.getSubjectList().then(response => {
+          console.info( response.data)
+          //获取所有一级分类
+          this.subjectOneList = response.data
+          //所有一级分类进行遍历
+          for(let i = 0;i < this.subjectOneList.length ; i++){
+            // 获取每一个一级分类
+            let oneSubject = this.subjectOneList[i]
+            //比较当前courseInfo里的一级ID和所有一级分类ID
+            if(this.courseInfo.subjectParentId == oneSubject.id){
+                // 获取该一级分类下的二级分类
+                this.subjectTwoList = oneSubject.children
+            }
+          }
+        })
+      });
+      // 讲师列表
+      this.getTeacherList();
     },
   },
 };

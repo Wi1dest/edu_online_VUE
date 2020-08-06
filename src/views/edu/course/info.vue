@@ -123,28 +123,58 @@ export default {
     };
   },
   created() {
-    //获取路由的id值
-    if (this.$route.params && this.$route.params.id) {
-      this.courseId = this.$route.params.id;
-      this.getCourseById(this.courseId);
-    } else {
-      // 讲师列表
-      this.getTeacherList();
-      // 一级分类
-      this.getSubjectList();
-    }
+    this.init();
+  },
+  watch: {
+    $route(to, from) {
+      this.init();
+    },
   },
   methods: {
+    init() {
+      //获取路由的id值
+      if (this.$route.params && this.$route.params.id) {
+        this.courseId = this.$route.params.id;
+        this.getCourseById(this.courseId);
+      } else {
+        this.courseInfo = {
+          title: "",
+          subjectId: "",
+          subjectParentId: "",
+          teacherId: "",
+          lessonNum: 0,
+          description: "",
+          cover: "/static/cover.jpg",
+          price: 0,
+        };
+        // 讲师列表
+        this.getTeacherList();
+        // 一级分类
+        this.getSubjectList();
+      }
+    },
     saveOrUpdate() {
-      course.addCourseInfo(this.courseInfo).then((response) => {
-        // 提示
-        this.$message({
-          type: "success",
-          message: "添加课程成功!",
+      if (!this.courseInfo.id) {
+        course.addCourseInfo(this.courseInfo).then((response) => {
+          // 提示
+          this.$message({
+            type: "success",
+            message: "添加课程成功!",
+          });
+          //调到第二步
+          this.$router.push({ path: "/course/chapter/" + response.data });
         });
-        //调到第二步
-        this.$router.push({ path: "/course/chapter/" + response.data });
-      });
+      } else {
+        course.updateCourse(this.courseInfo).then((response) => {
+          // 提示
+          this.$message({
+            type: "success",
+            message: "修改课程成功!",
+          });
+          //调到第二步
+          this.$router.push({ path: "/course/chapter/" + this.courseId });
+        });
+      }
     },
     getTeacherList() {
       course.getTeacherList().then((response) => {
@@ -191,21 +221,20 @@ export default {
       course.getCourseById(courseId).then((response) => {
         this.courseInfo = response.data;
         // 查询所有分类(包含一级和二级)
-        subject.getSubjectList().then(response => {
-          console.info( response.data)
+        subject.getSubjectList().then((response) => {
           //获取所有一级分类
-          this.subjectOneList = response.data
+          this.subjectOneList = response.data;
           //所有一级分类进行遍历
-          for(let i = 0;i < this.subjectOneList.length ; i++){
+          for (let i = 0; i < this.subjectOneList.length; i++) {
             // 获取每一个一级分类
-            let oneSubject = this.subjectOneList[i]
+            let oneSubject = this.subjectOneList[i];
             //比较当前courseInfo里的一级ID和所有一级分类ID
-            if(this.courseInfo.subjectParentId == oneSubject.id){
-                // 获取该一级分类下的二级分类
-                this.subjectTwoList = oneSubject.children
+            if (this.courseInfo.subjectParentId == oneSubject.id) {
+              // 获取该一级分类下的二级分类
+              this.subjectTwoList = oneSubject.children;
             }
           }
-        })
+        });
       });
       // 讲师列表
       this.getTeacherList();

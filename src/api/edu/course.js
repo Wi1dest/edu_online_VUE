@@ -27,5 +27,17 @@ export default {
             method: 'put',
             data: courseInfo
         })
+    },
+    getCoursePublish(courseId){
+        return request({
+            url: "/eduservice/course/getCoursePublish/"+courseId,
+            method: 'get'
+        })
+    },
+    fixCoursePublish(courseId){
+        return request({
+            url: "/eduservice/course/"+courseId,
+            method: 'put'
+        })
     }
 }

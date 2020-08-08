@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h2 style="text-align: center;">发布新课程</h2>
+    <h2 style="text-align: center;">{{this.pageTitle}}</h2>
 
     <el-steps :active="1" process-status="wait" align-center style="margin-bottom: 40px;">
       <el-step title="填写课程基本信息" />
@@ -105,6 +105,7 @@ export default {
   },
   data() {
     return {
+      pageTitle: "发布新课程",
       saveBtnDisabled: false, // 保存按钮是否禁用
       courseInfo: {
         title: "",
@@ -135,6 +136,7 @@ export default {
       //获取路由的id值
       if (this.$route.params && this.$route.params.id) {
         this.courseId = this.$route.params.id;
+        this.pageTitle = "编辑课程基本信息"
         this.getCourseById(this.courseId);
       } else {
         this.courseInfo = {

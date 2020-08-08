@@ -39,5 +39,24 @@ export default {
             url: "/eduservice/course/"+courseId,
             method: 'put'
         })
+    },
+    getCourseInfo(page,limit){
+        return request({
+            url: `/eduservice/course/getCourse/${page}/${limit}`,
+            method: 'get'
+        })
+    },
+    getCourseInfoCondition(page,limit,courseVO){
+        return request({
+            url: `/eduservice/course/getCourse/${page}/${limit}`,
+            method: 'post',
+            data: courseVO
+        })
+    },
+    delCourse(courseId){
+        return request({
+            url: "/eduservice/course/deleteCourseByCourseId/" + courseId,
+            method: 'delete'
+        })
     }
 }

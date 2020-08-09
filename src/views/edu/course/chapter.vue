@@ -129,6 +129,7 @@ export default {
         sort: 0,
         isFree: 0,
         videoSourceId: "",
+        videoOriginalName: "",
       },
       dialogChapterFormVisible: false, //是否显示章节表单
       dialogVideoFormVisible: false, //是否显示小节表单
@@ -262,10 +263,23 @@ export default {
     //成功回调
     handleVodUploadSuccess(response, file, fileList) {
       this.video.videoSourceId = response.data;
+      this.video.videoOriginalName = file.name;
     },
     //视图上传多于一个视频
     handleUploadExceed(files, fileList) {
       this.$message.warning("想要重新上传视频，请先删除已上传的视频");
+    },
+    beforeVodRemove(file, fileList) {
+      return this.$confirm(`确定删除 ${file.name}？`);
+    },
+    handleVodRemove(file, fileList) {
+      console.log(this.video);
+      video.deleeteVideo(this.video.videoSourceId).then((response) => {
+        this.$message({
+          type: "success",
+          message: "删除视频成功",
+        });
+      });
     },
     // 通用部分
     previous() {

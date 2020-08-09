@@ -20,11 +20,17 @@ export default {
             method: 'get'
         })
     },
-    updateVideo(video){
+    // updateVideo(video){
+    //     return request({
+    //         url: "/eduservice/video/update",
+    //         method: 'put',
+    //         data: video
+    //     })
+    // },
+    deleeteVideo(videoId){
         return request({
-            url: "/eduservice/video/update",
-            method: 'put',
-            data: video
+            url: "/vodservice/video/deleteAliVideo/" + videoId,
+            method: 'delete'
         })
     }
 }

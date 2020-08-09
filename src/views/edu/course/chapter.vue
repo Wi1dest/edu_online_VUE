@@ -211,28 +211,44 @@ export default {
       this.video.title = "";
       this.video.sort = 0;
       this.video.free = 0;
+      this.video.videoOriginalName = "";
+      this.video.videoSourceId = "";
       // this.videoSourceId = 0
       this.dialogVideoFormVisible = true;
     },
     saveOrUpdateVideo() {
       if (!this.video.id) {
-        video.addVideo(this.video).then((response) => {
-          this.dialogVideoFormVisible = false; //是否显示小节表单
-          this.getChapterVideo();
-          // 提示
-          this.$message({
-            type: "success",
-            message: "添加小节成功!",
+        this.$confirm("请确保视频已经上传成功!(显示绿色√)", "提示", {
+          confirmButtonText: "我已确定上传成功",
+          cancelButtonText: "还没,再等等!",
+          type: "warning",
+        }).then(() => {
+          video.addVideo(this.video).then((response) => {
+            this.dialogVideoFormVisible = false; //是否显示小节表单
+            this.getChapterVideo();
+            // 提示
+            this.$message({
+              type: "success",
+              message: "添加小节成功!",
+            });
+            this.fileList = [];
           });
         });
       } else {
-        video.updateVideo(this.video).then((response) => {
-          this.dialogVideoFormVisible = false; //是否显示小节表单
-          this.getChapterVideo();
-          // 提示
-          this.$message({
-            type: "success",
-            message: "修改小节成功!",
+        this.$confirm("请确保视频已经上传成功!(显示绿色√)", "提示", {
+          confirmButtonText: "我已确定上传成功",
+          cancelButtonText: "还没,再等等!",
+          type: "warning",
+        }).then(() => {
+          video.updateVideo(this.video).then((response) => {
+            this.dialogVideoFormVisible = false; //是否显示小节表单
+            this.getChapterVideo();
+            // 提示
+            this.$message({
+              type: "success",
+              message: "修改小节成功!",
+            });
+            this.fileList = [];
           });
         });
       }
@@ -273,7 +289,6 @@ export default {
       return this.$confirm(`确定删除 ${file.name}？`);
     },
     handleVodRemove(file, fileList) {
-      console.log(this.video);
       video.deleeteVideo(this.video.videoSourceId).then((response) => {
         this.$message({
           type: "success",

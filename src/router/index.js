@@ -61,7 +61,7 @@ export const constantRouterMap = [
         name: '编辑讲师',
         component: () => import('@/views/edu/teacher/save'),
         meta: { title: '编辑讲师', icon: 'tree' },
-        hidden : true
+        hidden: true
       }
     ]
   },
@@ -130,7 +130,34 @@ export const constantRouterMap = [
       }
     ]
   },
-
+  {
+    path: '/banner',
+    component: Layout,
+    redirect: '/banner/table',
+    name: 'Banner管理',
+    meta: { title: 'Banner管理', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: 'Banner列表',
+        component: () => import('@/views/edu/banner/list'),
+        meta: { title: 'Banner列表', icon: 'table' }
+      },
+      {
+        path: 'save',
+        name: '添加Banner',
+        component: () => import('@/views/edu/banner/save'),
+        meta: { title: '添加Banner', icon: 'tree' }
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑Banner',
+        component: () => import('@/views/edu/banner/save'),
+        meta: { title: '编辑Banner', icon: 'tree' },
+        hidden: true
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
